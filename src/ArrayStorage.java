@@ -8,9 +8,7 @@ public class ArrayStorage {
     private int size;
 
     void clear() {
-        for (Resume r : getAll()) {
-            r = null;
-        }
+        Arrays.fill(storage, 0, size, null);
         size = 0;
     }
 
@@ -34,13 +32,20 @@ public class ArrayStorage {
 
     void delete(String uuid) {
         Resume[] all = getAll();
+        int indexOfResumeToDelete = -1;
         for (int i = 0; i < size; i++) {
-            if (all[i] != null) {
-                storage[i] = storage[size - 1];
-                size--;
+            if (indexOfResumeToDelete < 0) {
+                if (all[i].toString().equals(uuid)) {
+                    indexOfResumeToDelete = i;
+                }
             } else {
-                System.out.println("Invalid uuid in method 'delete': " + uuid);
+                all[i] = storage[i + 1];
             }
+        }
+        if (indexOfResumeToDelete < 0) {
+            System.out.println("There is no resume with uuid = " + uuid);
+        } else {
+            all[size - 1] = null;
         }
     }
 
@@ -48,10 +53,7 @@ public class ArrayStorage {
      * @return array, contains only Resumes in storage (without null)
      */
     Resume[] getAll() {
-        Resume[] all = new Resume[size];
-        for (int i = 0; i < size; i++) {
-            all[i] = storage[i];
-        }
+        Resume[] all = Arrays.copyOf(storage, size);
         return all;
     }
 
