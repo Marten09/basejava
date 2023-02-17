@@ -18,7 +18,7 @@ public class ArrayStorage {
     }
 
     public void save(Resume r) {
-        if (size == storage.length) {
+        if (size >= STORAGE_LIMIT) {
             System.out.println("There is no place in the storage for a new resume." + r.getUuid());
         } else if (getIndex(r.getUuid()) != -1) {
             System.out.println("Resume " + r.getUuid() + " already exist");
