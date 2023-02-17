@@ -8,7 +8,8 @@ import java.util.Arrays;
  * Array based storage for Resumes
  */
 public class ArrayStorage {
-    Resume[] storage = new Resume[10000];
+    private final int STORAGE_LIMIT = 10000;
+    private final Resume[] storage = new Resume[STORAGE_LIMIT];
     private int size = 0;
 
     public void clear() {
@@ -17,22 +18,21 @@ public class ArrayStorage {
     }
 
     public void save(Resume r) {
-        if (getIndex(r.getUuid()) == -1) {
-            if (size == storage.length) {
-                System.out.println("There is no place in the storage for a new resume." + r.getUuid());
-            } else if (size < storage.length) {
-                storage[size] = r;
-                size++;
-            }
+        if (size == storage.length) {
+            System.out.println("There is no place in the storage for a new resume." + r.getUuid());
+        } else if (getIndex(r.getUuid()) != -1) {
+            System.out.println("Resume " + r.getUuid() + " already exist");
+        } else {
+            storage[size] = r;
+            size++;
         }
     }
 
     public void update(Resume r) {
         if (getIndex(r.getUuid()) == -1) {
-            System.out.println("Resume is already in the storage" + r.getUuid());
+            System.out.println("Resume is already in the storage " + r.getUuid());
         } else {
-            storage[size] = r;
-            size++;
+            storage[getIndex(r.getUuid())] = r;
         }
     }
 
@@ -40,11 +40,7 @@ public class ArrayStorage {
         if (getIndex(uuid) == -1) {
             System.out.println("Resume is already in the storage" + uuid);
         } else {
-            for (int i = 0; i < size; i++) {
-                if (storage[i].getUuid().equals(uuid)) {
-                    return storage[i];
-                }
-            }
+            return storage[getIndex(uuid)];
         }
         System.out.println("There is no resume with uuid = " + uuid);
         return null;
@@ -54,23 +50,17 @@ public class ArrayStorage {
         if (getIndex(uuid) == -1) {
             System.out.println("Resume is already in the storage" + uuid);
         } else {
-            for (int i = 0; i < size; i++) {
-                if (storage[i].getUuid().equals(uuid)) {
-                    size--;
-                    for (int j = i; j < size; j++) {
-                        storage[j] = storage[j + 1];
-                    }
-                    storage[size] = null;
-                }
-            }
+            storage[getIndex(uuid)] = storage[size - 1];
+            storage[size - 1] = null;
+            size--;
         }
     }
+
 
     /**
      * @return array, contains only Resumes in storage (without null)
      */
     public Resume[] getAll() {
-
         return Arrays.copyOf(storage, size);
     }
 
