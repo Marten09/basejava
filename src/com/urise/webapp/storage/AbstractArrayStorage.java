@@ -63,9 +63,9 @@ public abstract class AbstractArrayStorage implements Storage {
         int index = getIndex(uuid);
         if (index == -1) {
             System.out.println("Resume is already in the storage " + uuid);
+            return null;
         }
         return storage[index];
-
     }
 
     protected abstract int getIndex(String uuid);
