@@ -21,14 +21,14 @@ public abstract class AbstractArrayStorage implements Storage {
         size = 0;
     }
 
-    final public void save(Resume r) {
+    public final void save(Resume r) {
         int index = getIndex(r.getUuid());
         if (size >= STORAGE_LIMIT) {
             throw new StorageException("Storage overflow", r.getUuid());
         } else if (index != -1) {
             throw new ExistStorageException(r.getUuid());
         } else {
-            doSave(r,index);
+            doSave(r, index);
             size++;
         }
     }
@@ -42,7 +42,7 @@ public abstract class AbstractArrayStorage implements Storage {
         }
     }
 
-    final public void delete(String uuid) {
+    public final void delete(String uuid) {
         int index = getIndex(uuid);
         if (index == -1) {
             throw new NotExistStorageException(uuid);
@@ -71,6 +71,8 @@ public abstract class AbstractArrayStorage implements Storage {
     }
 
     protected abstract int getIndex(String uuid);
+
     protected abstract void doSave(Resume r, int index);
+
     protected abstract void doDelete(int index);
 }
