@@ -7,7 +7,7 @@ import com.urise.webapp.model.Resume;
 
 import java.util.Arrays;
 
-public abstract class AbstractArrayStorage implements Storage {
+public abstract class AbstractArrayStorage extends AbstractStorage {
     protected static final int STORAGE_LIMIT = 10000;
     protected final Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size = 0;
@@ -21,6 +21,7 @@ public abstract class AbstractArrayStorage implements Storage {
         size = 0;
     }
 
+    @Override
     public final void save(Resume r) {
         int index = getIndex(r.getUuid());
         if (size >= STORAGE_LIMIT) {
@@ -28,11 +29,11 @@ public abstract class AbstractArrayStorage implements Storage {
         } else if (index >= 0) {
             throw new ExistStorageException(r.getUuid());
         } else {
-            doSave(r, index);
+            insertElement(r, index);
             size++;
         }
     }
-
+    @Override
     public final void update(Resume r) {
         int index = getIndex(r.getUuid());
         if (index == -1) {
@@ -41,13 +42,13 @@ public abstract class AbstractArrayStorage implements Storage {
             storage[index] = r;
         }
     }
-
+    @Override
     public final void delete(String uuid) {
         int index = getIndex(uuid);
         if (index == -1) {
             throw new NotExistStorageException(uuid);
         } else {
-            doDelete(index);
+            fillDeletedElement(index);
             storage[size - 1] = null;
             size--;
         }
@@ -62,17 +63,17 @@ public abstract class AbstractArrayStorage implements Storage {
     }
 
 
-    public final Resume get(String uuid) {
-        int index = getIndex(uuid);
-        if (index < 0) {
-            throw new NotExistStorageException(uuid);
-        }
-        return storage[index];
-    }
+//    public final Resume get(String uuid) {
+//        int index = getIndex(uuid);
+//        if (index < 0) {
+//            throw new NotExistStorageException(uuid);
+//        }
+//        return storage[index];
+//    }
 
     protected abstract int getIndex(String uuid);
 
-    protected abstract void doSave(Resume r, int index);
+    protected abstract void insertElement(Resume r, int index);
 
-    protected abstract void doDelete(int index);
+    protected abstract void fillDeletedElement(int index);
 }
