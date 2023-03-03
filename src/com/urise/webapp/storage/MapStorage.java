@@ -47,8 +47,7 @@ public class MapStorage extends AbstractStorage {
 
     @Override
     public Resume[] getAll() {
-        List<Resume> valueList = new ArrayList<>(map.values());
-        return valueList;
+       return map.values().toArray(new Resume[0]);
     }
 
     @Override
