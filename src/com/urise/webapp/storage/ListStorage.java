@@ -9,7 +9,7 @@ public class ListStorage extends AbstractStorage {
     protected List<Resume> list = new ArrayList<>();
 
     @Override
-    protected Integer getKey(String uuid) {
+    protected Integer getSearchKey(String uuid) {
         for (int i = 0; i < list.size(); i++) {
             if (uuid.equals(list.get(i).getUuid())) {
                 return i;
@@ -48,7 +48,7 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    public Resume[] getAll() {
+    public List<Resume> doCopyAll() {
         return list.toArray(new Resume[0]);
     }
 
