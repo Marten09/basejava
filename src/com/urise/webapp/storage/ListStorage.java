@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ListStorage extends AbstractStorage {
-    protected List<Resume> list = new ArrayList<>();
+    private List<Resume> list = new ArrayList<>();
 
     @Override
     protected Integer getSearchKey(String uuid) {
@@ -15,11 +15,11 @@ public class ListStorage extends AbstractStorage {
                 return i;
             }
         }
-        return -1;
+        return null;
     }
     @Override
     protected boolean isExist(Object searchKey) {
-        return searchKey != -1;
+        return searchKey != null;
     }
 
     @Override
@@ -49,7 +49,7 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     public List<Resume> doCopyAll() {
-        return list.toArray(new Resume[0]);
+        return new ArrayList<>(list);
     }
 
     @Override

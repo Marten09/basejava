@@ -2,7 +2,6 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.exception.ExistStorageException;
 import com.urise.webapp.exception.NotExistStorageException;
-import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
 import org.junit.Assert;
 import org.junit.Before;
@@ -11,8 +10,6 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import static com.urise.webapp.storage.AbstractArrayStorage.STORAGE_LIMIT;
 
 public abstract class AbstractStorageTest {
     protected final Storage storage;
