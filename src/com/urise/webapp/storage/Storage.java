@@ -3,6 +3,7 @@ package com.urise.webapp.storage;
 import com.urise.webapp.model.Resume;
 
 import java.util.Comparator;
+import java.util.List;
 
 /**
  * Array based storage for Resumes
@@ -22,7 +23,7 @@ public interface Storage {
     /**
      * @return array, contains only Resumes in storage (without null)
      */
-    Comparator<Resume> getAllSorted();
+    List<Resume> getAllSorted();
 
     int size();
 }
