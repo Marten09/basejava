@@ -1,7 +1,6 @@
 package com.urise.webapp.model;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 public class Organizations {
     private final String title;

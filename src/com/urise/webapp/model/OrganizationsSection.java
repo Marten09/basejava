@@ -2,7 +2,7 @@ package com.urise.webapp.model;
 
 import java.util.List;
 
-public class OrganizationsSection extends Organizations{
+public class OrganizationsSection extends Section{
     private final List<Organizations> organizationsList;
 
     public OrganizationsSection(List<Organizations> organizationsList) {
