@@ -30,6 +30,9 @@ public class SortedArrayStorage extends AbstractArrayStorage {
 
     @Override
     protected boolean isExist(Integer searchKey) {
+        if(searchKey >= 0) {
+            return true;
+        }
         return false;
     }
 }
