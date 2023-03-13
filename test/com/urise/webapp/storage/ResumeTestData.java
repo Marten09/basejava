@@ -36,18 +36,14 @@ public class ResumeTestData {
                 "администрирование Hudson/Jenkins, Ant + custom task, SoapUI, JPublisher, Flyway, Nagios, iReport, OpenCmis, Bonita, pgBouncer\n" +
                 "Отличное знание и опыт применения концепций ООП, SOA, шаблонов проектрирования, архитектурных шаблонов, UML, функционального программирования\n" +
                 "Родной русский, английский \"upper intermediate\"")));
-        section.put(SectionType.EXPERIENCE,new OrganizationsSection(Collections.singletonList("Alcatel, \n",
-                "Инженер по аппаратному и программному тестированию","Тестирование, отладка, внедрение ПО цифровой телефонной станции Alcatel 1000 S12 (CHILL, ASM).", 09/1997 ,01/2005)));
-        section.put(SectionType.EDUCATION,new OrganizationsSection(Collections.singletonList("Заочная физико-техническая школа при МФТИ, \n",
-                "Закончил с отличием", 09/1984, 06/1987)));
-
-
+//        section.put(SectionType.EXPERIENCE,new OrganizationsSection(Collections.singletonList("Alcatel, \n",
+//                "Инженер по аппаратному и программному тестированию","Тестирование, отладка, внедрение ПО цифровой телефонной станции Alcatel 1000 S12 (CHILL, ASM).")));
+//        section.put(SectionType.EDUCATION,new OrganizationsSection(Collections.singletonList("Заочная физико-техническая школа при МФТИ, \n",
+//                "Закончил с отличием")));
     }
 
     public static void main(String[] args) {
         Resume resume = new Resume("Grigorii Kislin");
         System.out.println(resume.getFullName());
-        setContacts();
-        setSection();
     }
 }
