@@ -2,11 +2,15 @@ package com.urise.webapp.model;
 
 import java.util.List;
 
-public class ListSection extends Section{
+public class ListSection extends AbstractSection {
     private final List<String> items;
 
     public ListSection(List<String> items) {
         this.items = items;
+    }
+
+    public List<String> getItems() {
+        return items;
     }
 
     @Override
@@ -22,10 +26,6 @@ public class ListSection extends Section{
     @Override
     public int hashCode() {
         return items.hashCode();
-    }
-
-    public List<String> getItems() {
-        return items;
     }
 
     @Override

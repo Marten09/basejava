@@ -5,7 +5,7 @@ import com.urise.webapp.model.*;
 import java.util.*;
 
 public class ResumeTestData {
-    private final Map<SectionType,Section> section= new EnumMap<>(SectionType.class);
+    private final Map<SectionType, AbstractSection> section= new EnumMap<>(SectionType.class);
     private final Map<ContactType,String> contact = new EnumMap<>(ContactType.class);
     private void setContacts() {
         contact.put(ContactType.PHONENUMBER, "++7(921) 855-0482");

@@ -2,19 +2,33 @@ package com.urise.webapp.model;
 
 import java.time.LocalDate;
 
-public class Organizations {
+public class Period {
     private final String title;
     private final String description;
-    private final String post;
     private final LocalDate startDate;
     private final LocalDate endDate;
 
-    public Organizations(String title, String description, String post, LocalDate startDate, LocalDate endDate) {
+    public Period(String title, String description, LocalDate startDate, LocalDate endDate) {
         this.title = title;
         this.description = description;
-        this.post = post;
         this.startDate = startDate;
         this.endDate = endDate;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
     }
 
     @Override
@@ -22,20 +36,18 @@ public class Organizations {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Organizations that = (Organizations) o;
+        Period period = (Period) o;
 
-        if (!title.equals(that.title)) return false;
-        if (!description.equals(that.description)) return false;
-        if (!post.equals(that.post)) return false;
-        if (!startDate.equals(that.startDate)) return false;
-        return endDate.equals(that.endDate);
+        if (!title.equals(period.title)) return false;
+        if (!description.equals(period.description)) return false;
+        if (!startDate.equals(period.startDate)) return false;
+        return endDate.equals(period.endDate);
     }
 
     @Override
     public int hashCode() {
         int result = title.hashCode();
         result = 31 * result + description.hashCode();
-        result = 31 * result + post.hashCode();
         result = 31 * result + startDate.hashCode();
         result = 31 * result + endDate.hashCode();
         return result;
@@ -43,10 +55,9 @@ public class Organizations {
 
     @Override
     public String toString() {
-        return "Organizations{" +
+        return "Period{" +
                 "title='" + title + '\'' +
                 ", description='" + description + '\'' +
-                ", post='" + post + '\'' +
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
                 '}';

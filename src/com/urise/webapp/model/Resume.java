@@ -10,14 +10,14 @@ public class Resume implements Comparable<Resume> {
     // Unique identifier
     private final String uuid;
     private final String fullName;
-    private final Map<SectionType,Section> section= new EnumMap<>(SectionType.class);
+    private final Map<SectionType, AbstractSection> section= new EnumMap<>(SectionType.class);
     private final Map<ContactType,String> contact = new EnumMap<>(ContactType.class);
 
     public Map<ContactType, String> getContact() {
         return contact;
     }
 
-    public Map<SectionType, Section> getSection() {
+    public Map<SectionType, AbstractSection> getSection() {
         return section;
     }
 
