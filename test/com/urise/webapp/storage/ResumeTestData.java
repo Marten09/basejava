@@ -13,7 +13,7 @@ public class ResumeTestData {
     private static final Map<ContactType, String> contact = new EnumMap<>(ContactType.class);
 
     private static void setContacts() {
-        contact.put(ContactType.PHONENUMBER, "++7(921) 855-0482");
+        contact.put(ContactType.PHONENUMBER, "+7(921) 855-0482");
         contact.put(ContactType.SKYPENICKNAME, "skype:grigory.kislin");
         contact.put(ContactType.EMAIL, " gkislin@yandex.ru");
     }
