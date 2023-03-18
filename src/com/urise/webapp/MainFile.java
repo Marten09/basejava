@@ -29,5 +29,19 @@ public class MainFile {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        printAllFiles(dir);
+    }
+    private static void printAllFiles(File dir) {
+        File[] listFiles = dir.listFiles();
+        if (listFiles != null) {
+            for (File files : listFiles) {
+                if (files.isFile()) {
+                    System.out.println("File - " + files.getName());
+                } else if (files.isDirectory()) {
+                    System.out.println("Directory - " + files.getName());
+                    printAllFiles(files);
+                }
+            }
+        }
     }
 }
