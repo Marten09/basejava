@@ -7,7 +7,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class ResumeTestData {
-    public static Resume resumeTest(String uuid, String fullName) {
+    public static Resume createResume(String uuid, String fullName) {
         Resume resume = new Resume(uuid, fullName);
         resume.addContact(ContactType.PHONENUMBER, "+7(921) 855-0482");
         resume.addContact(ContactType.SKYPENICKNAME, "skype:grigory.kislin");
