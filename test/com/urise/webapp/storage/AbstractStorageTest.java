@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public abstract class AbstractStorageTest {
-    protected static final File STORAGE_DIR = new File("C:\\basejava\\src\\com\\urise\\webapp\\storage");
+    protected static final File STORAGE_DIR = new File("C:\\basejava\\storage");
     protected final Storage storage;
     private static final String UUID_1 = "uuid1";
     private static final Resume RESUME_1 = ResumeTestData.createResume(UUID_1,"Name1");
@@ -64,7 +64,7 @@ public abstract class AbstractStorageTest {
     public void update() throws Exception {
         Resume newResume = new Resume(UUID_1,"NewName");
         storage.update(newResume);
-        Assert.assertSame(newResume, storage.get(UUID_1));
+        Assert.assertEquals(newResume, storage.get(UUID_1));
     }
 
     @Test(expected = NotExistStorageException.class)
@@ -108,6 +108,6 @@ public abstract class AbstractStorageTest {
     }
 
     private void assertGet(Resume resume) {
-        Assert.assertSame(resume, storage.get((resume.getUuid())));
+        Assert.assertEquals(resume, storage.get((resume.getUuid())));
     }
 }
