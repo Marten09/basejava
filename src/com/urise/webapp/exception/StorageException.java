@@ -1,5 +1,7 @@
 package com.urise.webapp.exception;
 
+import java.nio.file.Path;
+
 public class StorageException extends RuntimeException {
     private final String uuid;
 
@@ -11,7 +13,6 @@ public class StorageException extends RuntimeException {
         super(message, e);
         this.uuid = uuid;
     }
-
     public String getUuid() {
         return uuid;
     }

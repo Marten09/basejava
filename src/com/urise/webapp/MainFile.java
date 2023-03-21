@@ -1,5 +1,7 @@
 package com.urise.webapp;
 
+import com.urise.webapp.storage.Serialazable;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -29,17 +31,17 @@ public class MainFile {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        printAllFiles(dir);
+        printAllFiles(dir,"");
     }
-    private static void printAllFiles(File dir) {
+    private static void printAllFiles(File dir, String indent) {
         File[] listFiles = dir.listFiles();
         if (listFiles != null) {
             for (File files : listFiles) {
                 if (files.isFile()) {
-                    System.out.println("File - " + files.getName());
+                    System.out.println(indent + "File: " + files.getName());
                 } else if (files.isDirectory()) {
-                    System.out.println("Directory - " + files.getName());
-                    printAllFiles(files);
+                    System.out.println(indent + "Directory: " + files.getName());
+                    printAllFiles(files,indent + " ");
                 }
             }
         }
