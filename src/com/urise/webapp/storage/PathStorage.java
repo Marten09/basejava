@@ -2,14 +2,18 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
+import com.urise.webapp.storage.strategies.Serialazable;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.nio.file.Files.exists;
 
@@ -38,11 +42,7 @@ public class PathStorage extends AbstractStorage<Path> {
 
     @Override
     protected void doClear() {
-        try {
-            Files.list(directory).forEach(this::doDelete);
-        } catch (IOException e) {
-            throw new StorageException("Path delete error", null);
-        }
+        getListFiles().forEach(this::doDelete);
     }
 
     @Override
@@ -84,17 +84,17 @@ public class PathStorage extends AbstractStorage<Path> {
 
     @Override
     protected List<Resume> doCopyAll() {
-        try {
-            return Files.list(directory).map(this::doGet).collect(Collectors.toList());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        return getListFiles().map(this::doGet).collect(Collectors.toList());
     }
 
     @Override
     public int size() {
+        return (int) getListFiles().count();
+    }
+
+    private Stream<Path> getListFiles(){
         try {
-            return (int) Files.size(directory);
+            return Files.list(directory);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

@@ -1,7 +1,5 @@
 package com.urise.webapp;
 
-import com.urise.webapp.storage.Serialazable;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;

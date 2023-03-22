@@ -2,6 +2,8 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
+import com.urise.webapp.storage.AbstractStorage;
+import com.urise.webapp.storage.strategies.Serialazable;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -36,11 +38,8 @@ public class FileStorage extends AbstractStorage<File> {
 
     @Override
     protected void doClear() {
-        File[] files = directory.listFiles();
-        if(files == null){
-            throw new StorageException("Error", null);
-        }
-        for(File file : files){
+        File[] files = dirListFiles();
+        for (File file : files) {
             doDelete(file);
         }
     }
@@ -58,7 +57,7 @@ public class FileStorage extends AbstractStorage<File> {
     @Override
     protected void doUpdate(Resume r, File file) {
         try {
-            serialazable.doWrite(r,  new BufferedOutputStream(new FileOutputStream(file)));
+            serialazable.doWrite(r, new BufferedOutputStream(new FileOutputStream(file)));
         } catch (IOException e) {
             throw new StorageException("Write error", file.getName(), e);
         }
@@ -82,10 +81,7 @@ public class FileStorage extends AbstractStorage<File> {
 
     @Override
     protected List<Resume> doCopyAll() {
-        File[] files = directory.listFiles();
-        if(files == null){
-            throw new StorageException("Error", null);
-        }
+        File[] files = dirListFiles();
         List<Resume> list = new ArrayList<>(files.length);
         for (File file : files) {
             list.add(doGet(file));
@@ -95,10 +91,15 @@ public class FileStorage extends AbstractStorage<File> {
 
     @Override
     public int size() {
-        String[] list = directory.list();
-        if(list == null){
+        File[] files = dirListFiles();
+        return files.length;
+    }
+
+    private File[] dirListFiles() {
+        File[] files = directory.listFiles();
+        if (files == null) {
             throw new StorageException("Error", null);
         }
-        return list.length;
+        return files;
     }
 }
