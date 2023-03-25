@@ -4,6 +4,6 @@ import com.urise.webapp.storage.strategies.ObjectStreamStorage;
 
 public class PathStorageTest extends AbstractStorageTest{
     public PathStorageTest(){
-        super(new PathStorage(STORAGE_DIR.getAbsolutePath(),new ObjectStreamStorage()));
+        super(new PathStorage(STORAGE_DIR.getAbsolutePath(), new ObjectStreamStorage()));
     }
 }

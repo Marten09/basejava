@@ -18,8 +18,8 @@ import java.util.stream.Stream;
 import static java.nio.file.Files.exists;
 
 public class PathStorage extends AbstractStorage<Path> {
-    private final Path directory;
-    private final Serialazable serialazable;
+    private Path directory;
+    private Serialazable serialazable;
 
     protected PathStorage(String dir, Serialazable serialazable) {
         directory = Paths.get(dir);
