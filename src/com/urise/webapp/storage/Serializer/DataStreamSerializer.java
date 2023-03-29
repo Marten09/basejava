@@ -4,9 +4,7 @@ import com.urise.webapp.model.*;
 
 import java.io.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class DataStreamSerializer implements Serialazable {
     @Override
@@ -28,12 +26,14 @@ public class DataStreamSerializer implements Serialazable {
                 dos.writeUTF(type.name());
                 switch (type) {
                     case PERSONAL, OBJECTIVE -> dos.writeUTF(((TextSection) section).getText());
-                    case ACHIEVEMENT, QUALIFICATIONS -> dos.writeUTF(((ListSection) section).getItems().toString());
+                    case ACHIEVEMENT, QUALIFICATIONS -> dos.writeInt(((ListSection) section).getItems().size());
                     case EXPERIENCE, EDUCATION -> {
-                        dos.writeUTF(((OrganizationSection) section).getOrganizations().toString());
+                        //dos.writeUTF(((OrganizationSection) section).getOrganizations().toString());
+                        dos.writeInt(((OrganizationSection) section).getOrganizations().size());
                         for (Organization organizations : ((OrganizationSection) section).getOrganizations()){
                             dos.writeUTF(organizations.getName());
-                            dos.writeUTF(organizations.getPeriods().toString());
+                            //dos.writeUTF(organizations.getPeriods().toString());
+                            dos.writeInt(organizations.getPeriods().size());
                             for (Period period : organizations.getPeriods()){
                                 dos.writeUTF(period.getDescription());
                                 dos.writeUTF(period.getTitle());
