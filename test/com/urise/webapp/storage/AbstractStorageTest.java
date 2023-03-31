@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.junit.Assert.*;
+
 public abstract class AbstractStorageTest {
     protected static final File STORAGE_DIR = new File("C:\\basejava\\storage");
     protected final Storage storage;
@@ -46,13 +48,13 @@ public abstract class AbstractStorageTest {
     public void clear() throws Exception {
         storage.clear();
         assertSize(0);
-        Assert.assertEquals(new ArrayList<>(), storage.getAllSorted());
+        assertEquals(new ArrayList<>(), storage.getAllSorted());
     }
     @Test
     public void save() throws Exception {
         storage.save(RESUME_4);
-        assertGet(RESUME_4);
         assertSize(4);
+        assertGet(RESUME_4);
     }
 
     @Test(expected = ExistStorageException.class)
@@ -64,7 +66,7 @@ public abstract class AbstractStorageTest {
     public void update() throws Exception {
         Resume newResume = new Resume(UUID_1,"NewName");
         storage.update(newResume);
-        Assert.assertEquals(newResume, storage.get(UUID_1));
+        assertEquals(newResume, storage.get(UUID_1));
     }
 
     @Test(expected = NotExistStorageException.class)
@@ -87,8 +89,8 @@ public abstract class AbstractStorageTest {
     @Test
     public void getAllSorted() throws Exception {
         List<Resume> list = storage.getAllSorted();
-        assertSize(3);
-        Assert.assertEquals(list, Arrays.asList(RESUME_1, RESUME_2, RESUME_3));
+        assertEquals(3,list.size());
+        assertEquals(list, Arrays.asList(RESUME_1, RESUME_2, RESUME_3));
     }
 
     @Test
@@ -104,10 +106,10 @@ public abstract class AbstractStorageTest {
     }
 
     private void assertSize(int size) {
-        Assert.assertEquals(size, storage.size());
+        assertEquals(size, storage.size());
     }
 
     private void assertGet(Resume resume) {
-        Assert.assertEquals(resume, storage.get((resume.getUuid())));
+        assertEquals(resume, storage.get((resume.getUuid())));
     }
 }
