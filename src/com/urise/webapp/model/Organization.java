@@ -2,11 +2,14 @@ package com.urise.webapp.model;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Organization implements Serializable {
+    @Serial
     private static final long serialVersionUID = 1L;
     private String name;
     private String website;
@@ -16,6 +19,8 @@ public class Organization implements Serializable {
     }
 
     public Organization(String name, String website, List<Period> periods) {
+        Objects.requireNonNull(name, "name must not be null");
+        Objects.requireNonNull(periods, "periods must not be null");
         this.name = name;
         this.website = website;
         this.periods = periods;

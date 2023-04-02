@@ -15,8 +15,7 @@ public class DataStreamSerializer implements Serialazable {
         try (DataOutputStream dos = new DataOutputStream(os)) {
             dos.writeUTF(r.getUuid());
             dos.writeUTF(r.getFullName());
-            Map<ContactType, String> contacts = r.getContact();
-            writeCollection(dos, contacts.entrySet(), entry -> {
+            writeCollection(dos, r.getContact().entrySet(), entry -> {
                 dos.writeUTF(entry.getKey().name());
                 dos.writeUTF(entry.getValue());
             });
@@ -30,12 +29,12 @@ public class DataStreamSerializer implements Serialazable {
                     case ACHIEVEMENT, QUALIFICATIONS ->
                             writeCollection(dos, ((ListSection) section).getItems(), dos::writeUTF);
                     case EXPERIENCE, EDUCATION -> {
-                        writeCollection(dos, ((OrganizationSection) section).getOrganizations(), organizations -> {
-                            dos.writeUTF(organizations.getName());
-                            dos.writeUTF(organizations.getWebsite());
-                            writeCollection(dos, organizations.getPeriods(), period -> {
-                                dos.writeUTF(period.getDescription());
+                        writeCollection(dos, ((OrganizationSection) section).getOrganizations(), organization -> {
+                            dos.writeUTF(organization.getName());
+                            dos.writeUTF(organization.getWebsite());
+                            writeCollection(dos, organization.getPeriods(), period -> {
                                 dos.writeUTF(period.getTitle());
+                                dos.writeUTF(period.getDescription());
                                 writeLocalDate(dos, period.getStartDate());
                                 writeLocalDate(dos, period.getEndDate());
                             });
@@ -64,7 +63,7 @@ public class DataStreamSerializer implements Serialazable {
 
     public void writeLocalDate(DataOutputStream dos, LocalDate localDate) throws IOException {
         dos.writeInt(localDate.getYear());
-        dos.writeInt(localDate.getMonthValue());
+        dos.writeInt(localDate.getMonth().getValue());
     }
 
     public AbstractSection readSection(DataInputStream dis, SectionType sectionType) throws IOException {
