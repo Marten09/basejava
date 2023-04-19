@@ -6,8 +6,8 @@ import org.postgresql.util.PSQLException;
 
 import java.sql.SQLException;
 
-public class ConvertSqlException {
-    private ConvertSqlException(){
+public class ExceptionUtil {
+    private ExceptionUtil(){
 
     }
     public static StorageException convertException(SQLException e) {

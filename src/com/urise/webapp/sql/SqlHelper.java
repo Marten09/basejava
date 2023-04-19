@@ -22,7 +22,23 @@ public class SqlHelper {
              PreparedStatement ps = conn.prepareStatement(sql)) {
             return sqlExecutor.execute(ps);
         } catch (SQLException e) {
-            throw ConvertSqlException.convertException(e);
+            throw ExceptionUtil.convertException(e);
+        }
+    }
+
+    public <T> T transactionalExecute(SqlTransaction<T> executor) {
+        try (Connection conn = connectionFactory.getConnection()) {
+            try {
+                conn.setAutoCommit(false);
+                T res = executor.execute(conn);
+                conn.commit();
+                return res;
+            } catch (SQLException e) {
+                conn.rollback();
+                throw ExceptionUtil.convertException(e);
+            }
+        } catch (SQLException e) {
+            throw new StorageException(e);
         }
     }
 }
