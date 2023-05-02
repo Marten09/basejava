@@ -16,7 +16,7 @@ import java.util.UUID;
 import static org.junit.Assert.*;
 
 public abstract class AbstractStorageTest {
-    protected static final File STORAGE_DIR = Config.getInstance().getStorageDir();
+    protected static final File STORAGE_DIR = Config.get().getStorageDir();
     protected final Storage storage;
     private static final String UUID_1 = UUID.randomUUID().toString();
     private static final Resume RESUME_1 = ResumeTestData.createResume(UUID_1,"Name1");

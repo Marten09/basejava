@@ -27,7 +27,7 @@ public class MainDate {
         SimpleDateFormat sdf = new SimpleDateFormat("YY/MM/dd");
         System.out.println(sdf.format(date));
 
-        DateTimeFormatter dtf = DateTimeFormatter.ofLocalizedPattern("YY/MM/dd");
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("YY/MM/dd");
         System.out.println(dtf.format(ldt));
     }
 }

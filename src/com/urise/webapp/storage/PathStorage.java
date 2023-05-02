@@ -19,12 +19,14 @@ import static java.nio.file.Files.exists;
 
 public class PathStorage extends AbstractStorage<Path> {
     private Path directory;
+
     private Serialazable serialazable;
 
-    protected PathStorage(String dir, Serialazable serialazable) {
+    protected PathStorage(String dir, Serialazable streamSerializer) {
+        Objects.requireNonNull(dir, "directory must not be null");
+
+        this.serialazable = streamSerializer;
         directory = Paths.get(dir);
-        this.serialazable = serialazable;
-        Objects.requireNonNull(directory, "directory must not be null");
         if (!Files.isDirectory(directory) || !Files.isWritable(directory)) {
             throw new IllegalArgumentException(dir + " is not directory or is not writable");
         }
