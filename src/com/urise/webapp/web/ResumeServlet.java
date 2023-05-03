@@ -1,6 +1,7 @@
 package com.urise.webapp.web;
 
 import com.urise.webapp.Config;
+import com.urise.webapp.model.ContactType;
 import com.urise.webapp.model.Resume;
 import com.urise.webapp.storage.SqlStorage;
 import com.urise.webapp.storage.Storage;
@@ -19,49 +20,47 @@ public class ResumeServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//        request.setCharacterEncoding("UTF-8");
-//        response.setCharacterEncoding("UTF-8");
-////        response.setHeader("Content-Type", "text/html; charset=UTF-8");
-//        response.setContentType("text/html; charset=UTF-8");
-////        String name = request.getParameter("name");
-////        response.getWriter().write(name == null ? "Hello Resumes!" : "Hello " + name + "!");
-//        response.getWriter().write("<!DOCTYPE html>\n" +
-//                "<html>\n" +
-//                "<style>\n" +
-//                "table, th, td {\n" +
-//                "  border:1px solid black;\n" +
-//                "}\n" +
-//                "</style>\n" +
-//                "<body>\n" +
-//                "\n" +
-//                "<h2>resume table</h2>\n" +
-//                "\n" +
-//                "<table style=\"width:100%\">\n" +
-//                "  <tr>\n" +
-//                "    <td>uuid</td>\n" +
-//                "    <td>full_name</td>\n" +
-//                "  </tr>\n");
-////                "  <tr>\n" +
-////                "    <td>75781ce7-8eae-46ac-a736-3fac40e9ecd7</td>\n" +
-////                "    <td>Name1</td>\n" +
-////                "  </tr>\n" +
-////                "</table>\n")
-//        for (Resume resume : storage.getAllSorted()) {
-//            response.getWriter().write("<tr>\n" +
-//                    "        <td>" + resume.getUuid() + "</td>\n" +
-//                    "        <td>" + resume.getFullName() + "</td>\n" +
-//                    "    </tr>\n");
-//        }
-//        response.getWriter().write("</section>\n" +
-//                "</table>\n" +
-//                "</body>\n" +
-//                "</html>\n");
-//        response.getWriter().close();
-        request.setAttribute("resumes", storage.getAllSorted());
-        request.getRequestDispatcher("/WEB-INF/jsp/list.jsp").forward(request, response);
+        String uuid = request.getParameter("uuid");
+        String action = request.getParameter("action");
+        if (action == null) {
+            request.setAttribute("resumes", storage.getAllSorted());
+            request.getRequestDispatcher("/WEB-INF/jsp/list.jsp").forward(request, response);
+            return;
+        }
+        Resume r;
+        switch (action) {
+            case "delete":
+                storage.delete(uuid);
+                response.sendRedirect("resume");
+                return;
+            case "view":
+            case "edit":
+                r = storage.get(uuid);
+                break;
+            default:
+                throw new IllegalStateException("Action" + action + "is illegal");
+        }
+        request.setAttribute("resume", r);
+        request.getRequestDispatcher(
+                ("view".equals(action) ? "/WEB-INF/jsp/view.jsp" : "/WEB-INF/jsp/edit.jsp")
+        ).forward(request, response);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        request.setCharacterEncoding("UTF-8");
+        String uuid = request.getParameter("uuid");
+        String fullName = request.getParameter("fullName");
+        Resume r = storage.get(uuid);
+        r.setFullName(fullName);
+        for (ContactType type : ContactType.values()) {
+            String value = request.getParameter(type.name());
+            if (value != null && value.trim().length() != 0) {
+                r.addContact(type, value);
+            } else {
+                r.getContact().remove(type);
+            }
+        }
+        storage.update(r);
+        response.sendRedirect("resume");
     }
 }

@@ -1,6 +1,6 @@
 <%@ page import="com.urise.webapp.model.ContactType" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <html>
 <head>
@@ -15,13 +15,17 @@
         <tr>
             <th>Имя</th>
             <th>Email</th>
+            <th></th>
+            <th></th>
         </tr>
         <jsp:useBean id="resumes" scope="request" type="java.util.List"/>
         <c:forEach items="${resumes}" var="resume">
-            <jsp:useBean id="resume" class="com.urise.webapp.model.Resume"/>
+            <jsp:useBean id="resume" type="com.urise.webapp.model.Resume"/>
             <tr>
-                <td><a href="resume?uuid=${resume.uuid}">${resume.fullName}</a></td>
-                <td>${resume.getContact(ContactType.EMAIL)}</td>
+                <td><a href="resume?uuid=${resume.uuid}&action=view">${resume.fullName}</a></td>
+                <td><%=ContactType.EMAIL.toHtml(resume.getContact(ContactType.EMAIL))%></td>
+                <td><a href="resume?uuid=${resume.uuid}&action=delete"><img src="img/delete.png"></a></td>
+                <td><a href="resume?uuid=${resume.uuid}&action=edit"><img src="img/pencil.png"></a></td>
             </tr>
         </c:forEach>
     </table>
