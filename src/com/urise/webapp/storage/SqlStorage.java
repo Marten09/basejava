@@ -3,6 +3,7 @@ package com.urise.webapp.storage;
 import com.urise.webapp.exception.NotExistStorageException;
 import com.urise.webapp.model.*;
 import com.urise.webapp.sql.SqlHelper;
+import com.urise.webapp.util.JsonParser;
 
 import java.sql.*;
 import java.util.*;
@@ -157,12 +158,7 @@ public class SqlStorage implements Storage {
                 ps.setString(1, r.getUuid());
                 ps.setString(2, e.getKey().name());
                 AbstractSection section = e.getValue();
-                SectionType sectionType = e.getKey();
-                switch (sectionType) {
-                    case PERSONAL, OBJECTIVE -> ps.setString(3, ((TextSection) section).getText());
-                    case ACHIEVEMENT, QUALIFICATIONS ->
-                            ps.setString(3, String.join("\n", ((ListSection) section).getItems()));
-                }
+                ps.setString(3, JsonParser.write(section, AbstractSection.class));
                 ps.addBatch();
             }
             ps.executeBatch();
@@ -180,11 +176,7 @@ public class SqlStorage implements Storage {
         String value = rs.getString("section_value");
         if (value != null) {
             SectionType sectionType = SectionType.valueOf(rs.getString("section_type"));
-            switch (sectionType) {
-                case PERSONAL, OBJECTIVE -> r.addSection(sectionType, new TextSection(value));
-                case ACHIEVEMENT, QUALIFICATIONS ->
-                        r.addSection(sectionType, new ListSection(List.of(value.split("\n"))));
-            }
+            r.addSection(sectionType, JsonParser.read(value, AbstractSection.class));
         }
     }
 
