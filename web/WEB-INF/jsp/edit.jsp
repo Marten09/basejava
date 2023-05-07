@@ -1,4 +1,6 @@
 <%@ page import="com.urise.webapp.model.ContactType" %>
+<%@ page import="com.urise.webapp.model.SectionType" %>
+<%@ page import="com.urise.webapp.model.ListSection" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -24,6 +26,20 @@
                 <dt>${type.title}</dt>
                 <dd><input type="text" name="${type.name()}" size=30 value="${resume.getContact(type)}"></dd>
             </dl>
+        </c:forEach>
+        <h3>Секции : </h3>
+        <c:forEach var="type" items="<%=SectionType.values()%>">
+            <c:set var="section" value="${resume.getSection(type)}"/>
+            <jsp:useBean id="section" type="com.urise.webapp.model.AbstractSection"/>
+            <h2><a>${type.title}</a></h2>
+            <c:choose>
+                <c:when test="${type == 'PERSONAL' || type == 'OBJECTIVE'}">
+                    <textarea name='${type}' cols=75 rows=5><%=section%></textarea>
+                </c:when>
+                <c:when test="${type == 'ACHIEVEMENT' || type == 'QUALIFICATIONS'}">
+                    <textarea name='${type}' cols=75 rows=5><%=String.join("\n", ((ListSection) section).getItems())%></textarea>
+                </c:when>
+            </c:choose>
         </c:forEach>
         <hr>
         <button type="submit">Сохранить</button>

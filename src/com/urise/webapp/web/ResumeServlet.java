@@ -1,14 +1,14 @@
 package com.urise.webapp.web;
 
 import com.urise.webapp.Config;
-import com.urise.webapp.model.ContactType;
-import com.urise.webapp.model.Resume;
+import com.urise.webapp.model.*;
 import com.urise.webapp.storage.SqlStorage;
 import com.urise.webapp.storage.Storage;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
 import java.io.IOException;
+import java.util.List;
 
 public class ResumeServlet extends HttpServlet {
     private Storage storage;
@@ -54,10 +54,28 @@ public class ResumeServlet extends HttpServlet {
         r.setFullName(fullName);
         for (ContactType type : ContactType.values()) {
             String value = request.getParameter(type.name());
-            if (value != null && value.trim().length() != 0) {
-                r.addContact(type, value);
-            } else {
+            if (value == null || value.trim().length() == 0) {
                 r.getContact().remove(type);
+            } else {
+                r.setContact(type, value);
+            }
+        }
+        for (SectionType type : SectionType.values()) {
+            String value = request.getParameter(type.name());
+            String[] values = request.getParameterValues(type.name());
+            if (value == null || value.trim().length() == 0 && values.length < 2) {
+                r.getSection().remove(type);
+            } else {
+                switch (type) {
+                    case OBJECTIVE:
+                    case PERSONAL:
+                        r.setSection(type, new TextSection(value));
+                        break;
+                    case ACHIEVEMENT:
+                    case QUALIFICATIONS:
+                        r.setSection(type, new ListSection(List.of(value.split("\\n"))));
+                        break;
+                }
             }
         }
         storage.update(r);
