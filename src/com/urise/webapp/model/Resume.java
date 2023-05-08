@@ -18,12 +18,12 @@ public class Resume implements Comparable<Resume>, Serializable {
     static {
 //        NEW_RESUME.setFullName("");
 //        NEW_RESUME.setUuid("");
-        NEW_RESUME.setSection(SectionType.OBJECTIVE, new TextSection(""));
-        NEW_RESUME.setSection(SectionType.PERSONAL, new TextSection(""));
-        NEW_RESUME.setSection(SectionType.ACHIEVEMENT, new ListSection(List.of("")));
-        NEW_RESUME.setSection(SectionType.QUALIFICATIONS, new ListSection(List.of("")));
-        NEW_RESUME.setSection(SectionType.EXPERIENCE, new OrganizationSection(List.of(new Organization("", "", List.of(new Period("", "", LocalDate.of(1, 1, 1), LocalDate.of(1, 1, 1)))))));
-        NEW_RESUME.setSection(SectionType.EDUCATION, new OrganizationSection(List.of(new Organization("", "", List.of(new Period("", "", LocalDate.of(1, 1, 1), LocalDate.of(1, 1, 1)))))));
+        NEW_RESUME.setSection(SectionType.PERSONAL, TextSection.EMPTY);
+        NEW_RESUME.setSection(SectionType.OBJECTIVE, TextSection.EMPTY);
+        NEW_RESUME.setSection(SectionType.ACHIEVEMENT, ListSection.EMPTY);
+        NEW_RESUME.setSection(SectionType.QUALIFICATIONS, ListSection.EMPTY);
+        NEW_RESUME.setSection(SectionType.EXPERIENCE, new OrganizationSection(List.of(Organization.EMPTY)));
+        NEW_RESUME.setSection(SectionType.EDUCATION, new OrganizationSection(List.of(Organization.EMPTY)));
     }
 
     // Unique identifier

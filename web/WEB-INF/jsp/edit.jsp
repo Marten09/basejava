@@ -18,7 +18,7 @@
         <input type="hidden" name="uuid" value="${resume.uuid}">
         <dl>
             <dt>Имя:</dt>
-            <dt><input type="text" name="fullName" size=50 value="${resume.fullName}"></dt>
+            <dd><input type="text" name="fullName" size=50 value="${resume.fullName} required"></dd>
         </dl>
         <h3>Контакты:</h3>
         <c:forEach var="type" items="<%=ContactType.values()%>">
@@ -29,17 +29,15 @@
         </c:forEach>
         <h3>Секции : </h3>
         <c:forEach var="type" items="<%=SectionType.values()%>">
+            <P style="text-align: center"><b>${type.title}</b>:</P>
             <c:set var="section" value="${resume.getSection(type)}"/>
-            <jsp:useBean id="section" type="com.urise.webapp.model.AbstractSection"/>
-            <h2><a>${type.title}</a></h2>
-            <c:choose>
-                <c:when test="${type == 'PERSONAL' || type == 'OBJECTIVE'}">
-                    <textarea name='${type}' cols=75 rows=5><%=section%></textarea>
-                </c:when>
-                <c:when test="${type == 'ACHIEVEMENT' || type == 'QUALIFICATIONS'}">
-                    <textarea name='${type}' cols=75 rows=5><%=String.join("\n", ((ListSection) section).getItems())%></textarea>
-                </c:when>
-            </c:choose>
+            <c:if test="${type=='PERSONAL' || type=='OBJECTIVE'}">
+                <P style="text-align: center"><textarea name="${type.name()}" cols=165 rows=3>${section}</textarea></P>
+            </c:if>
+            <c:if test="${type=='ACHIEVEMENT' || type=='QUALIFICATIONS'}">
+                <textarea name="${type.name()}" cols=165
+                          rows=3><c:forEach var="item" items="${section.items}" varStatus="counter">${item}<c:if test="${counter.index != (value.items.size()-1)}"><%="\n"%></c:if></c:forEach></textarea>
+            </c:if>
         </c:forEach>
         <hr>
         <button type="submit">Сохранить</button>

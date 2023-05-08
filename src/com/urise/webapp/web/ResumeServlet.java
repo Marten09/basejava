@@ -2,7 +2,6 @@ package com.urise.webapp.web;
 
 import com.urise.webapp.Config;
 import com.urise.webapp.model.*;
-import com.urise.webapp.storage.SqlStorage;
 import com.urise.webapp.storage.Storage;
 
 import javax.servlet.*;
@@ -37,8 +36,36 @@ public class ResumeServlet extends HttpServlet {
                 r = Resume.NEW_RESUME;
                 break;
             case "view":
+                r = storage.get(uuid);
+                for (SectionType type : SectionType.values()) {
+                    AbstractSection section = r.getSection(type);
+                    if (section != null) {
+                        r.setSection(type, section);
+                    }
+                }
+                break;
             case "edit":
                 r = storage.get(uuid);
+                for (SectionType type : SectionType.values()) {
+                    AbstractSection section = r.getSection(type);
+                    if (section == null) {
+                        switch (type) {
+                            case OBJECTIVE:
+                            case PERSONAL:
+                                section = TextSection.EMPTY;
+                                break;
+                            case ACHIEVEMENT:
+                            case QUALIFICATIONS:
+                                section = ListSection.EMPTY;
+                                break;
+                            case EXPERIENCE:
+                            case EDUCATION:
+                                section = new OrganizationSection(List.of(Organization.EMPTY));
+                                break;
+                        }
+                    }
+                    r.setSection(type, section);
+                }
                 break;
             default:
                 throw new IllegalStateException("Action" + action + "is illegal");

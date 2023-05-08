@@ -29,42 +29,39 @@
             <c:set var="type" value="${sectionEntry.key}"/>
             <c:set var="section" value="${sectionEntry.value}"/>
             <jsp:useBean id="section" type="com.urise.webapp.model.AbstractSection"/>
-            <tr>
-                <td colspan="2"><h2><a name="type.name">${type.title}</a></h2></td>
-            </tr>
-            <c:choose>
-                <c:when test="${type == 'PERSONAL' || type == 'OBJECTIVE'}">
-                    <tr>
-                        <td colspan="2"><%=((TextSection) section).getText()%></td>
-                    </tr>
-                </c:when>
-                <c:when test="${type == 'ACHIEVEMENT' || type == 'QUALIFICATIONS'}">
-                    <tr>
-                        <td colspan="2">
-                            <c:forEach var="item" items="<%=((ListSection) section).getItems()%>">
-                                <li>${item}</li>
-                            </c:forEach>
-                        </td>
-                    </tr>
-                </c:when>
-                <c:when test="${type == 'EXPERIENCE' || type == 'EDUCATION'}">
-                    <c:forEach var="org" items="<%=((OrganizationSection) section).getOrganizations()%>">
-                        <tr>
-                            <td colspan="2">
-                                <a href='${org.website}'><c:out value="${org.name}"/></a><br>
-                            </td>
-                        </tr>
-                        <c:forEach var="period" items="${org.periods}">
-                            <jsp:useBean id="period" type="com.urise.webapp.model.Period"/>
-                            <tr>
-                                <td><b>${period.title}</b><br>${period.description}</td>
-                                <td>${period.startDate}</td>
-                                <td>${period.endDate}</td>
-                            </tr>
+            <c:if test="<%=section != null && section.toString().trim().length() > 0%>">
+                <c:if test="${type=='PERSONAL' || type=='OBJECTIVE'}">
+                    <P style="text-align: center"><b>${type.title}</b>:</P>
+                    ${section}<br/>
+                </c:if>
+                <c:if test="${type=='ACHIEVEMENT' || type=='QUALIFICATIONS'}">
+                    <P style="text-align: center"><b>${type.title}</b>:</P>
+                    <ul>
+                        <c:forEach var="item" items="${section.items}">
+                            <li>${item}<br/></li>
                         </c:forEach>
+                    </ul>
+                </c:if>
+                <c:if test="${type=='EXPERIENCE' || type=='EDUCATION'}">
+                    <P style="text-align: center"><b>${type.title}</b>:</P>
+                    <c:forEach var="org" items="<%=((OrganizationSection) section).getOrganizations()%>">
+                        <c:if test="${empty org.website}">
+                            ${org.name}<br/>
+                        </c:if>
+                        <c:if test="${!empty org.website}">
+                            <a href="${org.website}">${org.name}</a><br/>
+                        </c:if>
+                        <ul>
+                            <c:forEach var="pos" items="${org.periods}">
+                                <li>${pos.startDate} - ${pos.endDate}<br/>
+                                        ${pos.title}<br/>
+                                        ${pos.description}</li>
+                                <br/>
+                            </c:forEach>
+                        </ul>
                     </c:forEach>
-                </c:when>
-            </c:choose>
+                </c:if>
+            </c:if>
         </c:forEach>
     </table>
 </section>

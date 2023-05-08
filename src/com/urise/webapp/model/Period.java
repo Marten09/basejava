@@ -15,6 +15,7 @@ import java.time.LocalDate;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Period implements Serializable {
     private static final long serialVersionUID = 1L;
+    public static final Period EMPTY = new Period();
     private String title;
     private String description;
     @XmlJavaTypeAdapter(LocalDateAdapter.class)
