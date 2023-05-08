@@ -7,7 +7,10 @@ import com.urise.webapp.storage.Storage;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class ResumeServlet extends HttpServlet {
     private Storage storage;
@@ -98,8 +101,7 @@ public class ResumeServlet extends HttpServlet {
         }
         for (SectionType type : SectionType.values()) {
             String value = request.getParameter(type.name());
-            String[] values = request.getParameterValues(type.name());
-            if (value == null || value.trim().length() == 0 && values.length < 2) {
+            if (value == null || value.trim().length() == 0) {
                 r.getSection().remove(type);
             } else {
                 switch (type) {
@@ -109,7 +111,13 @@ public class ResumeServlet extends HttpServlet {
                         break;
                     case ACHIEVEMENT:
                     case QUALIFICATIONS:
-                        r.setSection(type, new ListSection(List.of(value.split("\\n"))));
+                        List<String> stringList = Arrays.stream(value
+                                        .replaceAll("\r", "\n")
+                                        .split("\\n"))
+                                .map(String::trim)
+                            .filter(s -> !s.isBlank())
+                            .toList();
+                        r.setSection(type, new ListSection(stringList));
                         break;
                 }
             }

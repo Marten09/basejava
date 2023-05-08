@@ -36,16 +36,20 @@
                     <%=((TextSection) Objects.requireNonNull(section)).getText()%><br/>
                 </c:if>
                 <c:if test="${type=='ACHIEVEMENT' || type=='QUALIFICATIONS'}">
+                    <c:set var="listSection" value="${section}"/>
+                    <jsp:useBean id="listSection" type="com.urise.webapp.model.ListSection"/>
                     <P style="text-align: center"><b>${type.title}</b>:</P>
                     <ul>
-                        <c:forEach var="item" items="${section.items}">
+                        <c:forEach var="item" items="${listSection.items}">
                             <li>${item}<br/></li>
                         </c:forEach>
                     </ul>
                 </c:if>
                 <c:if test="${type=='EXPERIENCE' || type=='EDUCATION'}">
+                    <c:set var="orgSection" value="${section}"/>
+                    <jsp:useBean id="orgSection" type="com.urise.webapp.model.OrganizationSection"/>
                     <P style="text-align: center"><b>${type.title}</b>:</P>
-                    <c:forEach var="org" items="<%=((OrganizationSection) section).getOrganizations()%>">
+                    <c:forEach var="org" items="${orgSection.organizations}">
                         <c:if test="${empty org.website}">
                             ${org.name}<br/>
                         </c:if>

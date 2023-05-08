@@ -19,7 +19,7 @@
         <input type="hidden" name="uuid" value="${resume.uuid}">
         <dl>
             <dt>Имя:</dt>
-            <dd><input type="text" name="fullName" size=50 value="${resume.fullName} required"></dd>
+            <dd><input type="text" pattern="^[a-zA-Z]+$" name="fullName" size=50 value="${resume.fullName} required"></dd>
         </dl>
         <h3>Контакты:</h3>
         <c:forEach var="type" items="<%=ContactType.values()%>">
@@ -38,8 +38,10 @@
                 <P style="text-align: center"><textarea name="${type.name()}" cols=165 rows=3>${textSection.text}</textarea></P>
             </c:if>
             <c:if test="${type=='ACHIEVEMENT' || type=='QUALIFICATIONS'}">
+                <c:set var="listSection" value="${section}"/>
+                <jsp:useBean id="listSection" type="com.urise.webapp.model.ListSection"/>
                 <textarea name="${type.name()}" cols=165
-                          rows=3><c:forEach var="item" items="${section.items}" varStatus="counter">${item}<c:if test="${counter.index != (value.items.size()-1)}"><%="\n"%></c:if></c:forEach></textarea>
+                          rows=3><c:forEach var="item" items="${listSection.items}" varStatus="counter">${item}<c:if test="${counter.index != (listSection.items.size()-1)}"><%="\n"%></c:if></c:forEach></textarea>
             </c:if>
         </c:forEach>
         <hr>
