@@ -1,6 +1,7 @@
 <%@ page import="com.urise.webapp.model.TextSection" %>
 <%@ page import="com.urise.webapp.model.ListSection" %>
 <%@ page import="com.urise.webapp.model.OrganizationSection" %>
+<%@ page import="java.util.Objects" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -32,7 +33,7 @@
             <c:if test="<%=section != null && section.toString().trim().length() > 0%>">
                 <c:if test="${type=='PERSONAL' || type=='OBJECTIVE'}">
                     <P style="text-align: center"><b>${type.title}</b>:</P>
-                    ${section}<br/>
+                    <%=((TextSection) Objects.requireNonNull(section)).getText()%><br/>
                 </c:if>
                 <c:if test="${type=='ACHIEVEMENT' || type=='QUALIFICATIONS'}">
                     <P style="text-align: center"><b>${type.title}</b>:</P>

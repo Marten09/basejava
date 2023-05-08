@@ -1,6 +1,7 @@
 <%@ page import="com.urise.webapp.model.ContactType" %>
 <%@ page import="com.urise.webapp.model.SectionType" %>
 <%@ page import="com.urise.webapp.model.ListSection" %>
+<%@ page import="com.urise.webapp.model.TextSection" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -32,7 +33,9 @@
             <P style="text-align: center"><b>${type.title}</b>:</P>
             <c:set var="section" value="${resume.getSection(type)}"/>
             <c:if test="${type=='PERSONAL' || type=='OBJECTIVE'}">
-                <P style="text-align: center"><textarea name="${type.name()}" cols=165 rows=3>${section}</textarea></P>
+                <c:set var="textSection" value="${section}"/>
+                <jsp:useBean id="textSection" type="com.urise.webapp.model.TextSection"/>
+                <P style="text-align: center"><textarea name="${type.name()}" cols=165 rows=3>${textSection.text}</textarea></P>
             </c:if>
             <c:if test="${type=='ACHIEVEMENT' || type=='QUALIFICATIONS'}">
                 <textarea name="${type.name()}" cols=165
