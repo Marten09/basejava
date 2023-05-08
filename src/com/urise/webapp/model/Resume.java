@@ -4,10 +4,8 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
-import java.util.EnumMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
+import java.time.LocalDate;
+import java.util.*;
 
 /**
  * Initial resume class
@@ -16,6 +14,17 @@ import java.util.UUID;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Resume implements Comparable<Resume>, Serializable {
     private static final long serialVersionUID = 1L;
+    public static final Resume NEW_RESUME = new Resume();
+    static {
+//        NEW_RESUME.setFullName("");
+//        NEW_RESUME.setUuid("");
+        NEW_RESUME.setSection(SectionType.OBJECTIVE, new TextSection(""));
+        NEW_RESUME.setSection(SectionType.PERSONAL, new TextSection(""));
+        NEW_RESUME.setSection(SectionType.ACHIEVEMENT, new ListSection(List.of("")));
+        NEW_RESUME.setSection(SectionType.QUALIFICATIONS, new ListSection(List.of("")));
+        NEW_RESUME.setSection(SectionType.EXPERIENCE, new OrganizationSection(List.of(new Organization("", "", List.of(new Period("", "", LocalDate.of(1, 1, 1), LocalDate.of(1, 1, 1)))))));
+        NEW_RESUME.setSection(SectionType.EDUCATION, new OrganizationSection(List.of(new Organization("", "", List.of(new Period("", "", LocalDate.of(1, 1, 1), LocalDate.of(1, 1, 1)))))));
+    }
 
     // Unique identifier
     private String uuid;
@@ -29,6 +38,10 @@ public class Resume implements Comparable<Resume>, Serializable {
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     public Map<SectionType, AbstractSection> getSection() {
