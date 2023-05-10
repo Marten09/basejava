@@ -11,6 +11,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Objects;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Period implements Serializable {
@@ -29,6 +30,10 @@ public class Period implements Serializable {
     }
 
     public Period(String title, String description, LocalDate startDate, LocalDate endDate) {
+        Objects.requireNonNull(startDate, "dateStart must be not null");
+        Objects.requireNonNull(endDate, "dateFinish must be not null");
+        Objects.requireNonNull(title, "post must be not null");
+        Objects.requireNonNull(description, "post must be not null");
         this.title = title;
         this.description = description;
         this.startDate = startDate;

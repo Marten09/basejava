@@ -3,10 +3,14 @@ package com.urise.webapp.web;
 import com.urise.webapp.Config;
 import com.urise.webapp.model.*;
 import com.urise.webapp.storage.Storage;
+import com.urise.webapp.util.DateUtil;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -51,21 +55,38 @@ public class ResumeServlet extends HttpServlet {
                 r = storage.get(uuid);
                 for (SectionType type : SectionType.values()) {
                     AbstractSection section = r.getSection(type);
-                    if (section == null) {
-                        switch (type) {
-                            case OBJECTIVE:
-                            case PERSONAL:
+                    switch (type) {
+                        case OBJECTIVE:
+                        case PERSONAL:
+                            if (section == null) {
                                 section = TextSection.EMPTY;
-                                break;
-                            case ACHIEVEMENT:
-                            case QUALIFICATIONS:
+                            }
+                            break;
+                        case ACHIEVEMENT:
+                        case QUALIFICATIONS:
+                            if (section == null) {
                                 section = ListSection.EMPTY;
-                                break;
-                            case EXPERIENCE:
-                            case EDUCATION:
-                                section = new OrganizationSection(List.of(Organization.EMPTY));
-                                break;
-                        }
+                            }
+                            break;
+                        case EXPERIENCE:
+                        case EDUCATION:
+                            OrganizationSection organizationSection = (OrganizationSection) section;
+                            List<Organization> emptyOrg = new ArrayList<>();
+                            emptyOrg.add(Organization.EMPTY);
+                            if (organizationSection != null) {
+                                for (Organization organization : organizationSection.getOrganizations()) {
+                                    List<Period> emptyPeriod = new ArrayList<>();
+                                    emptyPeriod.add(Period.EMPTY);
+                                    emptyPeriod.addAll(organization.getPeriods());
+                                    emptyOrg.add(new Organization(organization.getName(), organization.getWebsite(), emptyPeriod));
+                                }
+                            }
+                            section = new OrganizationSection(emptyOrg);
+                            break;
+//                            if (section == null) {
+//                                section = new OrganizationSection(List.of(Organization.EMPTY));
+//                            }
+//                            break;
                     }
                     r.setSection(type, section);
                 }
@@ -115,9 +136,28 @@ public class ResumeServlet extends HttpServlet {
                                         .replaceAll("\r", "\n")
                                         .split("\\n"))
                                 .map(String::trim)
-                            .filter(s -> !s.isBlank())
-                            .toList();
+                                .filter(s -> !s.isBlank())
+                                .toList();
                         r.setSection(type, new ListSection(stringList));
+                        break;
+                    case EDUCATION:
+                    case EXPERIENCE:
+                        List<Organization> orgs = new ArrayList<>();
+                        String[] names = request.getParameterValues(type.name());
+                        String[] website = request.getParameterValues(type.name() + "website");
+                        for (int i = 0; i < names.length; i++) {
+                            String name = names[i];
+                            List<Period> periods = new ArrayList<>();
+                            if (name != null && name.trim().length() != 0) {
+                                String title = request.getParameter(type.name() + "title" + i);
+                                String description= request.getParameter(type.name() + "description" + i);
+                                LocalDate startDates = LocalDate.parse(request.getParameter(type.name() + "startDate" + i), DateTimeFormatter.ofPattern("yyyy.MM.dd"));
+                                LocalDate endDates = LocalDate.parse(request.getParameter(type.name() + "endDate" + i), DateTimeFormatter.ofPattern("yyyy.MM.dd"));
+                                periods.add(new Period(title,description,startDates, endDates));
+                                orgs.add(new Organization(name, website[i], periods));
+                            }
+                        }
+                        r.setSection(type, new OrganizationSection(orgs));
                         break;
                 }
             }
