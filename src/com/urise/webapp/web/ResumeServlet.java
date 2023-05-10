@@ -144,22 +144,22 @@ public class ResumeServlet extends HttpServlet {
                     case EXPERIENCE:
                         List<Organization> orgs = new ArrayList<>();
                         String[] names = request.getParameterValues(type.name());
-                        String[] urls = request.getParameterValues(type.name() + "url");
+                        String[] website = request.getParameterValues(type.name() + "website");
                         for (int i = 0; i < names.length; i++) {
                             String name = names[i];
                             List<Period> periods = new ArrayList<>();
                             if (name != null && name.trim().length() != 0) {
-                                String[] startDates = request.getParameterValues(type.name() + "startDate" + i);
-                                String[] endDates = request.getParameterValues(type.name() + "endDate" + i);
-                                String[] title = request.getParameterValues(type.name() + "title" + i);
-                                String[] description = request.getParameterValues(type.name() + "description" + i);
-                                if(title == null){
-                                    continue;
+                                String pfx = type.name() + i;
+                                String[] startDates = request.getParameterValues(pfx + "startDate");
+                                String[] endDates = request.getParameterValues(pfx + "endDate");
+                                String[] titles = request.getParameterValues(pfx + "title");
+                                String[] descriptions = request.getParameterValues(pfx + "description");
+                                for (int j = 0; j < titles.length; j++) {
+                                    if (titles[j] != null && titles[j].trim().length() != 0) {
+                                        periods.add(new Period(titles[j], descriptions[j], DateUtil.parse(startDates[j]), DateUtil.parse(endDates[j])));
+                                    }
                                 }
-                                for (int j = 0; j < title.length; j++) {
-                                    periods.add(new Period(title[j], description[j],DateUtil.parse(startDates[j]), DateUtil.parse(endDates[j])));
-                                }
-                                orgs.add(new Organization(name, urls[i], periods));
+                                orgs.add(new Organization(name, website[i], periods));
                             }
                         }
                         r.setSection(type, new OrganizationSection(orgs));

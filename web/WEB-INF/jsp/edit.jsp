@@ -1,4 +1,5 @@
 <%@ page import="com.urise.webapp.model.*" %>
+<%@ page import="com.urise.webapp.util.DateUtil" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -45,28 +46,42 @@
                 <c:set var="orgSection" value="${section}"/>
                 <jsp:useBean id="orgSection" type="com.urise.webapp.model.OrganizationSection"/>
                 <c:forEach var="org" items="${orgSection.organizations}" varStatus="counter">
-                    <P style="text-align: center">Название организации:
-                        <textarea name="${type}" rows=1 cols=165>${org.name}</textarea></P>
-                    <P style="text-align: center">Ссылка:
-                        <textarea name="${type}url" rows=1 cols=165>${org.website}</textarea></P>
-                    <c:if test="${org.periods.size() <= 1}">
-                        <P style="text-align: center">Должность: </P><br/>
-                    </c:if>
-                    <c:if test="${org.periods.size() > 1}">
-                        <P style="text-align: center">Должности: </P><br/>
-                    </c:if>
-                    <c:forEach var="period" items="${org.periods}">
-                        Занимаемая должность:
-                        <input type="text" name="${type}post${counter.index}" value="${period.title}" size=50/><br/>
-                        Описание:
-                        <input type="text" name="${type}definition${counter.index}" value="${period.description}"
-                               size=100/><br/><br/>
-                        От:
-                        <input type="text" name="${type}dateStart${counter.index}" value="${period.startDate}"
-                               size=8 placeholder="yyyy-mm-dd"/><br/>
-                        До:
-                        <input type="text" name="${type}dateFinish${counter.index}" value="${period.endDate}"
-                               size=8 placeholder="yyyy-mm-dd"/><br/>
+        <dl>
+            <dt>Название учереждения:</dt>
+            <dd><input type="text" name='${type}' size=100 value="${org.name}"></dd>
+        </dl>
+        <dl>
+            <dt>Сайт учереждения:</dt>
+            <dd><input type="text" name='${type}website' size=100 value="${org.website}"></dd>
+            </dd>
+        </dl>
+        <br>
+        <div style="margin-left: 30px">
+            <c:forEach var="period" items="${org.periods}">
+                <jsp:useBean id="period" type="com.urise.webapp.model.Period"/>
+            <dl>
+                <dt>Начальная дата:</dt>
+                <dd>
+                    <input type="text" name="${type}${counter.index}startDate" size=10
+                           value="<%=DateUtil.format(period.getStartDate())%>" placeholder="MM/yyyy">
+                </dd>
+            </dl>
+            <dl>
+                <dt>Конечная дата:</dt>
+                <dd>
+                    <input type="text" name="${type}${counter.index}endDate" size=10
+                           value="<%=DateUtil.format(period.getEndDate())%>" placeholder="MM/yyyy">
+            </dl>
+            <dl>
+                <dt>Должность:</dt>
+                <dd><input type="text" name='${type}${counter.index}title' size=75
+                           value="${period.title}">
+            </dl>
+            <dl>
+                <dt>Описание:</dt>
+                <dd><textarea name="${type}${counter.index}description" rows=5
+                              cols=75>${period.description}</textarea></dd>
+            </dl>
                     </c:forEach>
                 </c:forEach>
             </c:if>
